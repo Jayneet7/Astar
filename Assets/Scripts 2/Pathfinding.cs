@@ -112,5 +112,4 @@ public class Pathfinding : MonoBehaviour {
 		return 14*dstX + 10 * (dstY-dstX);
 	}
 	
-	
 }
