@@ -4,13 +4,16 @@ using System;
 
 public class Heap<T> where T : IHeapItem<T> {
 	
+    // arry of items
 	T[] items;
 	int currentItemCount;
 	
+    // method to set the tree size
 	public Heap(int maxHeapSize) {
 		items = new T[maxHeapSize];
 	}
-	
+
+	// add a node in the tree
 	public void Add(T item) {
 		item.HeapIndex = currentItemCount;
 		items[currentItemCount] = item;
@@ -18,6 +21,7 @@ public class Heap<T> where T : IHeapItem<T> {
 		currentItemCount++;
 	}
 
+    // remove a node from the tree
 	public T RemoveFirst() {
 		T firstItem = items[0];
 		currentItemCount--;
@@ -27,6 +31,7 @@ public class Heap<T> where T : IHeapItem<T> {
 		return firstItem;
 	}
 
+    // if the iteam change the location reset the item in tree
 	public void UpdateItem(T item) {
 		SortUp(item);
 	}
@@ -40,7 +45,7 @@ public class Heap<T> where T : IHeapItem<T> {
 	public bool Contains(T item) {
 		return Equals(items[item.HeapIndex], item);
 	}
-
+    // for shorting the heap tree
 	void SortDown(T item) {
 		while (true) {
 			int childIndexLeft = item.HeapIndex * 2 + 1;
@@ -70,8 +75,9 @@ public class Heap<T> where T : IHeapItem<T> {
 
 		}
 	}
-	
-	void SortUp(T item) {
+
+    // sort the items on the heaptree
+		void SortUp(T item) {
 		int parentIndex = (item.HeapIndex-1)/2;
 		
 		while (true) {
@@ -87,6 +93,7 @@ public class Heap<T> where T : IHeapItem<T> {
 		}
 	}
 	
+    // perform a swap with temprary verialble
 	void Swap(T itemA, T itemB) {
 		items[itemA.HeapIndex] = itemB;
 		items[itemB.HeapIndex] = itemA;
@@ -98,7 +105,7 @@ public class Heap<T> where T : IHeapItem<T> {
 	
 	
 }
-
+// interface to get and set values from the node script
 public interface IHeapItem<T> : IComparable<T> {
 	int HeapIndex {
 		get;

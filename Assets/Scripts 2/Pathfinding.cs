@@ -5,27 +5,31 @@ using System;
 
 public class Pathfinding : MonoBehaviour {
 	
+    // to handle the request coming from pathrequestmanager
 	PathRequestManager requestManager;
-	Grid grid;
+	Grid grid; // getting the grid
 	
-	void Awake() {
+	// get the points on the map
+    void Awake() {
 		requestManager = GetComponent<PathRequestManager>();
 		grid = GetComponent<Grid>();
 	}
-	
-	
+
+    // to get the full path contains small parts
 	public void StartFindPath(Vector3 startPos, Vector3 targetPos) {
 		StartCoroutine(FindPath(startPos,targetPos));
 	}
 	
+    // to establish the path from start to end
 	IEnumerator FindPath(Vector3 startPos, Vector3 targetPos) {
 
-		Vector3[] waypoints = new Vector3[0];
-		bool pathSuccess = false;
+		Vector3[] waypoints = new Vector3[0]; // waypoint arry
+		bool pathSuccess = false; 
 		
 		Node startNode = grid.NodeFromWorldPoint(startPos);
 		Node targetNode = grid.NodeFromWorldPoint(targetPos);
 		
+        //calculate all the values for the nodes is walkbale point or not
 		
 		if (startNode.walkable && targetNode.walkable) {
 			Heap<Node> openSet = new Heap<Node>(grid.MaxSize);
@@ -68,6 +72,7 @@ public class Pathfinding : MonoBehaviour {
 		
 	}
 	
+    // reatrace the optimal path
 	Vector3[] RetracePath(Node startNode, Node endNode) {
 		List<Node> path = new List<Node>();
 		Node currentNode = endNode;
@@ -95,6 +100,8 @@ public class Pathfinding : MonoBehaviour {
 		}
 		return waypoints.ToArray();
 	}
+
+    // get the distance for diffrent paths calculation of g and h values
 	
 	int GetDistance(Node nodeA, Node nodeB) {
 		int dstX = Mathf.Abs(nodeA.gridX - nodeB.gridX);

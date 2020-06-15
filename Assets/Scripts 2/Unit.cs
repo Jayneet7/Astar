@@ -3,16 +3,18 @@ using System.Collections;
 
 public class Unit : MonoBehaviour {
 
-
+    // get information about unit's loaction
 	public Transform target;
-	float speed = 5;
-	Vector3[] path;
-	int targetIndex;
+	float speed = 5; // speed of the unit
+	Vector3[] path; // path arry that unit will follow
+	int targetIndex; // for the next node on index
 
+    // request path from the pathrequest manage script
 	void Start() {
 		PathRequestManager.RequestPath(transform.position,target.position, OnPathFound);
 	}
 
+    //to cover up shot distance form one node to another node on the path
 	public void OnPathFound(Vector3[] newPath, bool pathSuccessful) {
 		if (pathSuccessful) {
 			path = newPath;
@@ -22,6 +24,7 @@ public class Unit : MonoBehaviour {
 		}
 	}
 
+    //keep trak of the nodes on the path
 	IEnumerator FollowPath() {
 		Vector3 currentWaypoint = path[0];
 		while (true) {
@@ -39,6 +42,7 @@ public class Unit : MonoBehaviour {
 		}
 	}
 
+    // draw the gizmos to visualize the process
 	public void OnDrawGizmos() {
 		if (path != null) {
 			for (int i = targetIndex; i < path.Length; i ++) {

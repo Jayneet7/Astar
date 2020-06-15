@@ -17,7 +17,7 @@ public class Enemy : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
-    // Update is called once per frame
+    // Update is called once per frame change the postion for each node
     void Update()
     {
         if ((Vector2.Distance(transform.position, player.position)) > stopdistance)

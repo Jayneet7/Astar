@@ -4,15 +4,19 @@ using System.Collections.Generic;
 
 public class Grid : MonoBehaviour {
 
-	public bool displayGridGizmos;
+    //gizmo script
+	
+    public bool displayGridGizmos;
+    
 	public LayerMask unwalkableMask;
-	public Vector2 gridWorldSize;
-	public float nodeRadius;
-	Node[,] grid;
+	public Vector2 gridWorldSize; // world size
+	public float nodeRadius; // node size
+	Node[,] grid; // array of nodes
 
-	float nodeDiameter;
+	float nodeDiameter; 
 	int gridSizeX, gridSizeY;
 
+    //changing the global size to local size
 	void Awake() {
 		nodeDiameter = nodeRadius*2;
 		gridSizeX = Mathf.RoundToInt(gridWorldSize.x/nodeDiameter);
@@ -20,12 +24,14 @@ public class Grid : MonoBehaviour {
 		CreateGrid();
 	}
 
+
 	public int MaxSize {
 		get {
 			return gridSizeX * gridSizeY;
 		}
 	}
 
+    // create grid
 	void CreateGrid() {
 		grid = new Node[gridSizeX,gridSizeY];
 		Vector3 worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x/2 - Vector3.forward * gridWorldSize.y/2;
@@ -39,6 +45,7 @@ public class Grid : MonoBehaviour {
 		}
 	}
 
+    // To get the next node in our care next point on the heap tree
 	public List<Node> GetNeighbours(Node node) {
 		List<Node> neighbours = new List<Node>();
 
@@ -59,7 +66,7 @@ public class Grid : MonoBehaviour {
 		return neighbours;
 	}
 	
-
+    // setting the nodes on the grid
 	public Node NodeFromWorldPoint(Vector3 worldPosition) {
 		float percentX = (worldPosition.x + gridWorldSize.x/2) / gridWorldSize.x;
 		float percentY = (worldPosition.z + gridWorldSize.y/2) / gridWorldSize.y;
@@ -71,6 +78,7 @@ public class Grid : MonoBehaviour {
 		return grid[x,y];
 	}
 	
+    // to draw gizmos
 	void OnDrawGizmos() {
 		Gizmos.DrawWireCube(transform.position,new Vector3(gridWorldSize.x,1,gridWorldSize.y));
 		if (grid != null && displayGridGizmos) {
